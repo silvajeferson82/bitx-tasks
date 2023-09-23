@@ -7,4 +7,6 @@ export abstract class IUserRepository {
     username: string,
     email: string,
   ): Promise<UserEntity | null>;
+  abstract findByUsername(username: string): Promise<UserEntity | null>;
+  abstract findById(id: string): Promise<UserEntity | null>;
 }

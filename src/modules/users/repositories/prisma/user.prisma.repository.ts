@@ -20,4 +20,16 @@ export class UserPrismaRepository implements IUserRepository {
       data: user,
     });
   }
+
+  async findByUsername(username: string) {
+    return await this.prisma.user.findUnique({
+      where: { username },
+    });
+  }
+
+  async findById(id: string) {
+    return await this.prisma.user.findUnique({
+      where: { id },
+    });
+  }
 }
