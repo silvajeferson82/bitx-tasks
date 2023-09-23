@@ -22,3 +22,15 @@ export class CreateUserDTO {
   @ApiProperty()
   password: string;
 }
+
+export class UserNameAndEmailDTO {
+  @IsString()
+  @IsNotEmpty()
+  @ApiProperty()
+  username: string;
+
+  @IsEmail()
+  @ApiProperty()
+  @IsNotEmpty()
+  email: string;
+}
