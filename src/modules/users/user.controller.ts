@@ -1,4 +1,10 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  HttpException,
+  HttpStatus,
+  Post,
+} from '@nestjs/common';
 import { CreateUserDTO } from './dto/create-user.dto';
 import { UserEntity } from './entities/user.entity';
 import { CreateUserUseCase } from './useCases/create-user.useCase';
@@ -12,8 +18,12 @@ export class UserController {
   @Post()
   @ApiCreatedResponse({ type: UserEntity })
   async create(@Body() data: CreateUserDTO) {
-    const user = await this.createUserUseCase.execute(data);
+    try {
+      const user = await this.createUserUseCase.execute(data);
 
-    return new UserEntity(user);
+      return new UserEntity(user);
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+    }
   }
 }
