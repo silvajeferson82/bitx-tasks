@@ -65,10 +65,6 @@ export class TaskUserController {
   @Get('/:taskId')
   @UseGuards(AuthGuardProvider)
   @ApiBearerAuth()
-  @ApiBody({
-    description: 'Retorna uma tarefa pelo ID',
-    type: TaskByIdRequestDTO,
-  })
   @ApiOkResponse({ status: 200, type: TaskEntity })
   async findById(@Param() data: TaskByIdRequestDTO, @Request() req) {
     return await this.findByTaskId.execute({
@@ -98,10 +94,6 @@ export class TaskUserController {
   @Delete('/:taskId')
   @UseGuards(AuthGuardProvider)
   @ApiBearerAuth()
-  @ApiBody({
-    description: 'Remove uma tarefa pelo ID',
-    type: TaskByIdRequestDTO,
-  })
   @ApiOkResponse({ status: 200, type: TaskEntity })
   @ApiResponse({ status: 404, description: 'Task not found' })
   async delete(@Param() data: TaskByIdRequestDTO, @Request() req) {
