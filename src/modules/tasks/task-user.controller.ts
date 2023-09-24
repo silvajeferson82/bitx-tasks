@@ -5,16 +5,25 @@ import {
   Body,
   Request,
   Get,
+  Query,
+  HttpException,
+  HttpStatus,
+  Param,
 } from '@nestjs/common';
-import { TaskUserRequestDTO } from './dto/task-user.dto';
+import { TaskByIdRequestDTO, TaskUserRequestDTO } from './dto/task-user.dto';
 import {
   CreateTaskUserUseCase,
   FindAllTasksUserUseCase,
+  FindByIdTasksUserUseCase,
 } from './useCases/tasks.useCase';
 import { AuthGuardProvider } from 'src/infra/providers/auth-guard.provider';
-import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import { TaskUserEntity } from './entities/task-user.entity';
-import { UserEntity } from '../users/entities/user.entity';
+import {
+  ApiBearerAuth,
+  ApiCreatedResponse,
+  ApiOkResponse,
+  ApiTags,
+} from '@nestjs/swagger';
+import { TaskEntity, TaskUserEntity } from './entities/task-user.entity';
 
 @Controller('/api/tasks')
 @ApiTags('Tasks')
@@ -22,11 +31,13 @@ export class TaskUserController {
   constructor(
     private createTaskUser: CreateTaskUserUseCase,
     private findAllTasksUser: FindAllTasksUserUseCase,
+    private findByTaskId: FindByIdTasksUserUseCase,
   ) {}
 
-  @UseGuards(AuthGuardProvider)
   @Post()
-  @ApiOkResponse({ type: TaskUserEntity })
+  @UseGuards(AuthGuardProvider)
+  @ApiBearerAuth()
+  @ApiCreatedResponse({ type: TaskUserEntity })
   async create(@Body() data: TaskUserRequestDTO, @Request() req) {
     return this.createTaskUser.execute({
       ...data,
@@ -36,8 +47,19 @@ export class TaskUserController {
 
   @Get()
   @UseGuards(AuthGuardProvider)
-  @ApiOkResponse({ type: [UserEntity] })
+  @ApiBearerAuth()
+  @ApiOkResponse({ type: [TaskEntity] })
   async findAll(@Request() req) {
     return this.findAllTasksUser.execute(req.user.id);
+  }
+
+  @Get('/:taskId')
+  @UseGuards(AuthGuardProvider)
+  @ApiOkResponse({ type: TaskEntity })
+  async findById(@Param() data: TaskByIdRequestDTO, @Request() req) {
+    return await this.findByTaskId.execute({
+      userId: req.user.id,
+      taskId: data.taskId,
+    });
   }
 }

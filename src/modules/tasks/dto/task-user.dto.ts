@@ -53,3 +53,14 @@ export class TaskUserRequestDTO {
   @ApiProperty()
   status: EnumStatus;
 }
+
+export class TaskByIdRequestDTO {
+  @Transform(({ value }) => String(value))
+  @ApiProperty()
+  userId?: string;
+
+  @Transform(({ value }) => String(value))
+  @IsString()
+  @ApiProperty()
+  taskId: string;
+}

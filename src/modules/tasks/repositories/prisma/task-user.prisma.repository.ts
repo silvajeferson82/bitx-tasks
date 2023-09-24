@@ -1,6 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { ITaskUserRepository } from '../task-user.repository';
-import { TaskUserRequestDTO } from '../../dto/task-user.dto';
+import {
+  TaskByIdRequestDTO,
+  TaskUserRequestDTO,
+} from '../../dto/task-user.dto';
 import { TaskEntity, TaskUserEntity } from '../../entities/task-user.entity';
 import { PrismaService } from '../../../../infra/database/prisma.service';
 
@@ -29,6 +32,7 @@ export class TaskUserPrismaRepository implements ITaskUserRepository {
       },
     });
   }
+
   findAll(userId: string): Promise<TaskEntity[]> {
     return this.prisma.task.findMany({
       where: {
@@ -40,9 +44,20 @@ export class TaskUserPrismaRepository implements ITaskUserRepository {
       },
     });
   }
-  findById(id: string): Promise<TaskEntity> {
-    throw new Error('Method not implemented.');
+
+  findById(data: TaskByIdRequestDTO): Promise<TaskEntity> {
+    return this.prisma.task.findFirst({
+      where: {
+        id: data.taskId,
+        TaskUser: {
+          some: {
+            userId: data.userId,
+          },
+        },
+      },
+    });
   }
+
   update(id: string, data: Partial<TaskUserRequestDTO>): Promise<TaskEntity> {
     throw new Error('Method not implemented.');
   }
