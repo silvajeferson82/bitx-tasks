@@ -56,7 +56,6 @@ export class TaskUserRequestDTO {
 
 export class TaskByIdRequestDTO {
   @Transform(({ value }) => String(value))
-  @ApiProperty()
   userId?: string;
 
   @Transform(({ value }) => String(value))

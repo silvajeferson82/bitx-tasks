@@ -5,9 +5,6 @@ import {
   Body,
   Request,
   Get,
-  Query,
-  HttpException,
-  HttpStatus,
   Param,
 } from '@nestjs/common';
 import { TaskByIdRequestDTO, TaskUserRequestDTO } from './dto/task-user.dto';
@@ -19,6 +16,7 @@ import {
 import { AuthGuardProvider } from 'src/infra/providers/auth-guard.provider';
 import {
   ApiBearerAuth,
+  ApiBody,
   ApiCreatedResponse,
   ApiOkResponse,
   ApiTags,
@@ -36,8 +34,12 @@ export class TaskUserController {
 
   @Post()
   @UseGuards(AuthGuardProvider)
+  @ApiBody({
+    description: 'Criação de Tarefa',
+    type: TaskUserRequestDTO,
+  })
   @ApiBearerAuth()
-  @ApiCreatedResponse({ type: TaskUserEntity })
+  @ApiCreatedResponse({ status: 201, type: TaskUserEntity })
   async create(@Body() data: TaskUserRequestDTO, @Request() req) {
     return this.createTaskUser.execute({
       ...data,
@@ -55,6 +57,11 @@ export class TaskUserController {
 
   @Get('/:taskId')
   @UseGuards(AuthGuardProvider)
+  @ApiBearerAuth()
+  @ApiBody({
+    description: 'Retorna uma tarefa pelo ID',
+    type: TaskByIdRequestDTO,
+  })
   @ApiOkResponse({ type: TaskEntity })
   async findById(@Param() data: TaskByIdRequestDTO, @Request() req) {
     return await this.findByTaskId.execute({

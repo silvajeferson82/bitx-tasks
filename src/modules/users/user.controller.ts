@@ -11,7 +11,7 @@ import {
 import { CreateUserDTO } from './dto/create-user.dto';
 import { UserEntity } from './entities/user.entity';
 import { CreateUserUseCase } from './useCases/create-user.useCase';
-import { ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AuthGuardProvider } from '../../infra/providers/auth-guard.provider';
 import { ProfileUserUseCase } from './useCases/profile-user.useCase';
 
@@ -24,7 +24,12 @@ export class UserController {
   ) {}
 
   @Post('/users')
-  @ApiCreatedResponse({ type: UserEntity })
+  @ApiBody({
+    description: 'Criação de usuário',
+    type: CreateUserDTO,
+  })
+  @ApiResponse({ status: 201, type: UserEntity })
+  @ApiResponse({ status: 400, description: 'User already exists' })
   async create(@Body() data: CreateUserDTO) {
     try {
       const user = await this.createUserUseCase.execute(data);
@@ -36,7 +41,9 @@ export class UserController {
   }
 
   @Get('/users/profile')
+  @ApiResponse({ status: 200, type: UserEntity })
   @UseGuards(AuthGuardProvider)
+  @ApiBearerAuth()
   async profile(@Request() req) {
     return this.profileUserUseCase.execute(req.user.id);
   }
