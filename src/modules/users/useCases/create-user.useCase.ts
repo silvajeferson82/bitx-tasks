@@ -8,10 +8,10 @@ export class CreateUserUseCase {
   constructor(private userRepository: IUserRepository) {}
 
   async execute(data: CreateUserDTO) {
-    const user = await this.userRepository.findByUsernameOrEmail(
-      data.username,
-      data.email,
-    );
+    const user = await this.userRepository.findByUsernameOrEmail({
+      username: data.username,
+      email: data.email,
+    });
 
     if (user) {
       throw new Error('User already exists');
