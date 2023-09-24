@@ -16,7 +16,7 @@ import { AuthGuardProvider } from '../../infra/providers/auth-guard.provider';
 import { ProfileUserUseCase } from './useCases/profile-user.useCase';
 
 @Controller('/api')
-@ApiTags('users')
+@ApiTags('Users')
 export class UserController {
   constructor(
     private readonly createUserUseCase: CreateUserUseCase,

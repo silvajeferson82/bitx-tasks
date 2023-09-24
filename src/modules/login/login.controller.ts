@@ -4,7 +4,7 @@ import { SignInDTO } from './dto/sign-in.dto';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 
 @Controller('/api/auth')
-@ApiTags('auth')
+@ApiTags('Auth')
 export class LoginController {
   constructor(private readonly signInUseCase: SignInUseCase) {}
 
