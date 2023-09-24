@@ -9,5 +9,5 @@ export abstract class ITaskUserRepository {
     taskId: string,
     data: Partial<TaskUserRequestDTO>,
   ): Promise<TaskEntity>;
-  abstract delete(id: string): Promise<TaskEntity>;
+  abstract delete(taskId: string): Promise<TaskEntity>;
 }

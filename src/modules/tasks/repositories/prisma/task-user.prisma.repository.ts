@@ -46,7 +46,6 @@ export class TaskUserPrismaRepository implements ITaskUserRepository {
   }
 
   async findById(data: TaskByIdRequestDTO): Promise<TaskEntity> {
-    console.log(data);
     return this.prisma.task.findFirst({
       where: {
         id: data.taskId,
@@ -59,7 +58,7 @@ export class TaskUserPrismaRepository implements ITaskUserRepository {
     });
   }
 
-  update(taskId: string, data: TaskUserRequestDTO): Promise<TaskEntity> {
+  async update(taskId: string, data: TaskUserRequestDTO): Promise<TaskEntity> {
     return this.prisma.task.update({
       where: {
         id: taskId,
@@ -75,7 +74,20 @@ export class TaskUserPrismaRepository implements ITaskUserRepository {
     });
   }
 
-  delete(id: string): Promise<TaskEntity> {
-    throw new Error('Method not implemented.');
+  async delete(taskId: string): Promise<TaskEntity> {
+    const deleted = await this.prisma.$transaction([
+      this.prisma.taskUser.deleteMany({
+        where: {
+          taskId,
+        },
+      }),
+      this.prisma.task.delete({
+        where: {
+          id: taskId,
+        },
+      }),
+    ]);
+
+    return deleted[1];
   }
 }

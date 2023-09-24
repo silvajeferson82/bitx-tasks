@@ -7,6 +7,7 @@ import {
   Get,
   Param,
   Put,
+  Delete,
 } from '@nestjs/common';
 import { TaskByIdRequestDTO, TaskUserRequestDTO } from './dto/task-user.dto';
 import {
@@ -14,6 +15,7 @@ import {
   FindAllTasksUserUseCase,
   FindByIdTasksUserUseCase,
   UpdateTaskUserUseCase,
+  DeleteTaskUserUseCase,
 } from './useCases/tasks.useCase';
 import { AuthGuardProvider } from 'src/infra/providers/auth-guard.provider';
 import {
@@ -34,6 +36,7 @@ export class TaskUserController {
     private findAllTasksUser: FindAllTasksUserUseCase,
     private findByTaskId: FindByIdTasksUserUseCase,
     private updateTaskUser: UpdateTaskUserUseCase,
+    private deleteTaskUser: DeleteTaskUserUseCase,
   ) {}
 
   @Post()
@@ -82,7 +85,7 @@ export class TaskUserController {
     type: TaskUserRequestDTO,
   })
   @ApiOkResponse({ status: 200, type: TaskEntity })
-  @ApiResponse({ status: 404, description: 'Task not faoud' })
+  @ApiResponse({ status: 404, description: 'Task not found' })
   async update(
     @Param() data: TaskByIdRequestDTO,
     @Body() body: TaskUserRequestDTO,
@@ -90,5 +93,21 @@ export class TaskUserController {
   ) {
     body.userId = req.user.id;
     return await this.updateTaskUser.execute(data.taskId, body);
+  }
+
+  @Delete('/:taskId')
+  @UseGuards(AuthGuardProvider)
+  @ApiBearerAuth()
+  @ApiBody({
+    description: 'Remove uma tarefa pelo ID',
+    type: TaskByIdRequestDTO,
+  })
+  @ApiOkResponse({ status: 200, type: TaskEntity })
+  @ApiResponse({ status: 404, description: 'Task not found' })
+  async delete(@Param() data: TaskByIdRequestDTO, @Request() req) {
+    return await this.deleteTaskUser.execute({
+      userId: req.user.id,
+      taskId: data.taskId,
+    });
   }
 }
