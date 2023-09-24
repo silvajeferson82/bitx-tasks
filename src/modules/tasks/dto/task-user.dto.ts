@@ -15,10 +15,9 @@ enum EnumStatus {
 }
 
 export class TaskUserRequestDTO {
-  @IsString()
-  @IsNotEmpty()
+  @Transform(() => '')
   @ApiProperty()
-  userId: string;
+  userId?: string;
 
   @IsString()
   @IsNotEmpty()

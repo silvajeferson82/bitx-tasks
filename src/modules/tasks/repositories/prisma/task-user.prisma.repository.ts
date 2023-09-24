@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ITaskUserRepository } from '../task-user.repository';
 import { TaskUserRequestDTO } from '../../dto/task-user.dto';
-import { TaskUserEntity } from '../../entities/task-user.entity';
+import { TaskEntity, TaskUserEntity } from '../../entities/task-user.entity';
 import { PrismaService } from '../../../../infra/database/prisma.service';
 
 @Injectable()
@@ -29,19 +29,24 @@ export class TaskUserPrismaRepository implements ITaskUserRepository {
       },
     });
   }
-  findAll(): Promise<TaskUserEntity[]> {
+  findAll(userId: string): Promise<TaskEntity[]> {
+    return this.prisma.task.findMany({
+      where: {
+        TaskUser: {
+          some: {
+            userId,
+          },
+        },
+      },
+    });
+  }
+  findById(id: string): Promise<TaskEntity> {
     throw new Error('Method not implemented.');
   }
-  findById(id: string): Promise<TaskUserEntity> {
+  update(id: string, data: Partial<TaskUserRequestDTO>): Promise<TaskEntity> {
     throw new Error('Method not implemented.');
   }
-  update(
-    id: string,
-    data: Partial<TaskUserRequestDTO>,
-  ): Promise<TaskUserEntity> {
-    throw new Error('Method not implemented.');
-  }
-  delete(id: string): Promise<TaskUserEntity> {
+  delete(id: string): Promise<TaskEntity> {
     throw new Error('Method not implemented.');
   }
 }
