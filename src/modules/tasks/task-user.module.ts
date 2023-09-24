@@ -3,6 +3,7 @@ import { TaskUserController } from './task-user.controller';
 import { PrismaService } from '../../infra/database/prisma.service';
 import {
   CreateTaskUserUseCase,
+  DeleteTaskUserUseCase,
   FindAllTasksUserUseCase,
   FindByIdTasksUserUseCase,
   UpdateTaskUserUseCase,
@@ -19,6 +20,7 @@ import { TaskUserPrismaRepository } from './repositories/prisma/task-user.prisma
     FindAllTasksUserUseCase,
     FindByIdTasksUserUseCase,
     UpdateTaskUserUseCase,
+    DeleteTaskUserUseCase,
     {
       provide: ITaskUserRepository,
       useClass: TaskUserPrismaRepository,
@@ -29,6 +31,7 @@ import { TaskUserPrismaRepository } from './repositories/prisma/task-user.prisma
     FindAllTasksUserUseCase,
     FindByIdTasksUserUseCase,
     UpdateTaskUserUseCase,
+    DeleteTaskUserUseCase,
   ],
 })
 export class TaskUserModule {}
