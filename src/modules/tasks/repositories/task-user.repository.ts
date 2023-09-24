@@ -6,7 +6,7 @@ export abstract class ITaskUserRepository {
   abstract findAll(userId: string): Promise<TaskEntity[]>;
   abstract findById(data: TaskByIdRequestDTO): Promise<TaskEntity>;
   abstract update(
-    id: string,
+    taskId: string,
     data: Partial<TaskUserRequestDTO>,
   ): Promise<TaskEntity>;
   abstract delete(id: string): Promise<TaskEntity>;

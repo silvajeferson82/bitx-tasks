@@ -11,7 +11,7 @@ import { PrismaService } from '../../../../infra/database/prisma.service';
 export class TaskUserPrismaRepository implements ITaskUserRepository {
   constructor(private prisma: PrismaService) {}
 
-  save(data: TaskUserRequestDTO): Promise<TaskUserEntity> {
+  async save(data: TaskUserRequestDTO): Promise<TaskUserEntity> {
     return this.prisma.taskUser.create({
       data: {
         task: {
@@ -33,7 +33,7 @@ export class TaskUserPrismaRepository implements ITaskUserRepository {
     });
   }
 
-  findAll(userId: string): Promise<TaskEntity[]> {
+  async findAll(userId: string): Promise<TaskEntity[]> {
     return this.prisma.task.findMany({
       where: {
         TaskUser: {
@@ -45,7 +45,8 @@ export class TaskUserPrismaRepository implements ITaskUserRepository {
     });
   }
 
-  findById(data: TaskByIdRequestDTO): Promise<TaskEntity> {
+  async findById(data: TaskByIdRequestDTO): Promise<TaskEntity> {
+    console.log(data);
     return this.prisma.task.findFirst({
       where: {
         id: data.taskId,
@@ -58,9 +59,22 @@ export class TaskUserPrismaRepository implements ITaskUserRepository {
     });
   }
 
-  update(id: string, data: Partial<TaskUserRequestDTO>): Promise<TaskEntity> {
-    throw new Error('Method not implemented.');
+  update(taskId: string, data: TaskUserRequestDTO): Promise<TaskEntity> {
+    return this.prisma.task.update({
+      where: {
+        id: taskId,
+      },
+      data: {
+        title: data.title,
+        description: data.description,
+        startAt: data.startAt,
+        endAt: data.endAt,
+        priority: data.priority,
+        status: data.status,
+      },
+    });
   }
+
   delete(id: string): Promise<TaskEntity> {
     throw new Error('Method not implemented.');
   }

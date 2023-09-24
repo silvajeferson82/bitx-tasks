@@ -6,12 +6,14 @@ import {
   Request,
   Get,
   Param,
+  Put,
 } from '@nestjs/common';
 import { TaskByIdRequestDTO, TaskUserRequestDTO } from './dto/task-user.dto';
 import {
   CreateTaskUserUseCase,
   FindAllTasksUserUseCase,
   FindByIdTasksUserUseCase,
+  UpdateTaskUserUseCase,
 } from './useCases/tasks.useCase';
 import { AuthGuardProvider } from 'src/infra/providers/auth-guard.provider';
 import {
@@ -19,6 +21,7 @@ import {
   ApiBody,
   ApiCreatedResponse,
   ApiOkResponse,
+  ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
 import { TaskEntity, TaskUserEntity } from './entities/task-user.entity';
@@ -30,6 +33,7 @@ export class TaskUserController {
     private createTaskUser: CreateTaskUserUseCase,
     private findAllTasksUser: FindAllTasksUserUseCase,
     private findByTaskId: FindByIdTasksUserUseCase,
+    private updateTaskUser: UpdateTaskUserUseCase,
   ) {}
 
   @Post()
@@ -62,11 +66,29 @@ export class TaskUserController {
     description: 'Retorna uma tarefa pelo ID',
     type: TaskByIdRequestDTO,
   })
-  @ApiOkResponse({ type: TaskEntity })
+  @ApiOkResponse({ status: 200, type: TaskEntity })
   async findById(@Param() data: TaskByIdRequestDTO, @Request() req) {
     return await this.findByTaskId.execute({
       userId: req.user.id,
       taskId: data.taskId,
     });
+  }
+
+  @Put('/:taskId')
+  @UseGuards(AuthGuardProvider)
+  @ApiBearerAuth()
+  @ApiBody({
+    description: 'Atualiza uma tarefa pelo ID',
+    type: TaskUserRequestDTO,
+  })
+  @ApiOkResponse({ status: 200, type: TaskEntity })
+  @ApiResponse({ status: 404, description: 'Task not faoud' })
+  async update(
+    @Param() data: TaskByIdRequestDTO,
+    @Body() body: TaskUserRequestDTO,
+    @Request() req,
+  ) {
+    body.userId = req.user.id;
+    return await this.updateTaskUser.execute(data.taskId, body);
   }
 }
