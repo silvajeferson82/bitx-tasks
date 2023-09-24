@@ -27,7 +27,7 @@ export class UserInMemoryRepository implements IUserRepository {
   // findByUsername(username: string): Promise<UserEntity> {
   //   throw new Error('Method not implemented.');
   // }
-  // findById(id: string): Promise<UserEntity> {
-  //   throw new Error('Method not implemented.');
-  // }
+  findById(id: string): Promise<UserEntity> {
+    throw new Error('Method not implemented.');
+  }
 }
