@@ -5,6 +5,7 @@ import {
   CreateTaskUserUseCase,
   FindAllTasksUserUseCase,
   FindByIdTasksUserUseCase,
+  UpdateTaskUserUseCase,
 } from './useCases/tasks.useCase';
 import { ITaskUserRepository } from './repositories/task-user.repository';
 import { TaskUserPrismaRepository } from './repositories/prisma/task-user.prisma.repository';
@@ -17,11 +18,17 @@ import { TaskUserPrismaRepository } from './repositories/prisma/task-user.prisma
     CreateTaskUserUseCase,
     FindAllTasksUserUseCase,
     FindByIdTasksUserUseCase,
+    UpdateTaskUserUseCase,
     {
       provide: ITaskUserRepository,
       useClass: TaskUserPrismaRepository,
     },
   ],
-  exports: [CreateTaskUserUseCase],
+  exports: [
+    CreateTaskUserUseCase,
+    FindAllTasksUserUseCase,
+    FindByIdTasksUserUseCase,
+    UpdateTaskUserUseCase,
+  ],
 })
 export class TaskUserModule {}
