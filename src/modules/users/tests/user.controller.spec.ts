@@ -49,7 +49,6 @@ describe('UserController', () => {
 
     const result = await userController.create(body);
 
-    console.log(result);
     expect(result).toHaveProperty('id');
   });
 });
