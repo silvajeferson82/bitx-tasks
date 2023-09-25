@@ -6,7 +6,7 @@ import { CreateTaskUserUseCase } from '../create-task-user.useCase';
 import { TaskUserRequestDTO } from '../../dto/task-user.dto';
 import { FindByIdTasksUserUseCase } from '../findById-tasks-user.useCase';
 
-describe('FindAllTaskUserUseCase', () => {
+describe('Find by id task user', () => {
   let createTaskUserUseCase: CreateTaskUserUseCase;
   let findByidTaskUserUseCase: FindByIdTasksUserUseCase;
 
