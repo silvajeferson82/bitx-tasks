@@ -91,9 +91,8 @@ $ npm run test
 # http://localhost:3000/api-docs
 ```
 <p align="center">
-
-![Authentication Swagger](https://prisma-blog-ebon.vercel.app/blog/posts/nestjs-prisma-authentication/auth-workflow-swagger.gif)
-
+  <a href="https://www.prisma.io/blog/nestjs-prisma-rest-api-7D056s1BmOL0
+" target="blank"><img src="./assets/swagger-image.png" /></a>
 </p>
 
 ## Support
