@@ -77,6 +77,14 @@ $ npm run start:dev
 $ npm run start:prod
 ```
 
+## Test
+
+```bash
+# unit tests
+$ npm run test
+```
+
+
 
 ## Swagger
 ```bash
