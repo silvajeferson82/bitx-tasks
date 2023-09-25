@@ -44,13 +44,21 @@ export class TaskInMemoryRepository implements ITaskUserRepository {
     ) {
       return this.tasks[0];
     }
-    throw new Error('Task not found');
   }
-  update(
+
+  async update(
     taskId: string,
     data: Partial<TaskUserRequestDTO>,
   ): Promise<TaskEntity> {
-    throw new Error('Method not implemented.');
+    if (taskId === this.tasks[0].id) {
+      this.tasks[0].title = data.title;
+      this.tasks[0].description = data.description;
+      this.tasks[0].startAt = data.startAt;
+      this.tasks[0].endAt = data.endAt;
+      this.tasks[0].priority = data.priority;
+      this.tasks[0].status = data.status;
+      return this.tasks[0];
+    }
   }
   delete(taskId: string): Promise<TaskEntity> {
     throw new Error('Method not implemented.');
