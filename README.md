@@ -59,6 +59,17 @@ $ docker-compose up
 ou
 $ docker compose up
 ```
+## .ENV
+```bash
+# create .env file
+$ touch .env
+
+#create env
+# *Você ppode substituir os valores de POSTGRES_USER e POSTGRES_PASSWORD no arquivo docker-compose
+DATABASE_URL=postgresql://task_user:task_password@0.0.0.0:5433/bitx_tasks_db?schema=public"
+
+JWT_SECRET="<substitua_pelo_valor_que_desejar>"
+``````
 
 ## Migrations
 ```bash 
