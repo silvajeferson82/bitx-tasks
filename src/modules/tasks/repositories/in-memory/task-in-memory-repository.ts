@@ -37,8 +37,14 @@ export class TaskInMemoryRepository implements ITaskUserRepository {
     }
     return [];
   }
-  findById(data: TaskByIdRequestDTO): Promise<TaskEntity> {
-    throw new Error('Method not implemented.');
+  async findById(data: TaskByIdRequestDTO): Promise<TaskEntity> {
+    if (
+      data.userId === this.tasksUser[0].userId &&
+      data.taskId === this.tasksUser[0].taskId
+    ) {
+      return this.tasks[0];
+    }
+    throw new Error('Task not found');
   }
   update(
     taskId: string,
