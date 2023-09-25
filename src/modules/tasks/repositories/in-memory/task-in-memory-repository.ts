@@ -60,7 +60,11 @@ export class TaskInMemoryRepository implements ITaskUserRepository {
       return this.tasks[0];
     }
   }
-  delete(taskId: string): Promise<TaskEntity> {
-    throw new Error('Method not implemented.');
+  async delete(taskId: string): Promise<TaskEntity> {
+    if (taskId === this.tasks[0].id) {
+      const task = this.tasks[0];
+      this.tasks.splice(0, 1);
+      return task;
+    }
   }
 }
